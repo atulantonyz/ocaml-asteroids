@@ -1,0 +1,11 @@
+name: ocaml-asteroids
+version: 0.0.1
+description: Asteroids clone in OCaml and OpenGL (LablGL / GLUT)
+licence: MIT
+authors: Atul
+obuild-ver: 1
+
+executable ocaml-asteroids
+    main-is: main.ml
+    src-dir: src
+    buildDepends: lablgl, lablgl.glut

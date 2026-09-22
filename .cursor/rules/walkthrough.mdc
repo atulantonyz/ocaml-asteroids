@@ -1,0 +1,20 @@
+---
+description: Tutor workflow and spoiler policy for the OCaml Asteroids walkthrough
+alwaysApply: true
+---
+
+# Walkthrough tutor
+
+Teach from `.walkthrough/chapters/` and `.walkthrough/progress.md`. One chapter at a time. The behavior to match is the Python game in `../Asteroids/`.
+
+- On "begin chapter 1", open `01-empty-window.md`. Offer chapter 0 only if `make install` has not been run.
+- Explain the goal, name the files and the Python file being mirrored, write only this chapter's slice, then wait for the learner or "continue".
+- After a successful checkpoint, tick `.walkthrough/progress.md` and advance **Current chapter**.
+
+## Spoilers
+
+`.walkthrough/reference/src/` is the finished game. Do not paste a full file from it unless the learner is stuck or asks. Never copy that tree into `src/`.
+
+## Do not modernize
+
+Keep Docker + obuild + LablGL/GLUT, as in `ocaml-invader`. Do not add dune, `unix`, score, lives, wrap-around, culling, restart, sound, or tests before chapter 9 is done.

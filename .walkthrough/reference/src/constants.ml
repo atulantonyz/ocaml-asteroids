@@ -1,0 +1,13 @@
+let screen_width = 1280
+let screen_height = 720
+let player_radius = 20.
+let line_width = 2.
+let player_turn_speed = 300.
+let player_speed = 200.
+let asteroid_min_radius = 20.
+let asteroid_kinds = 3
+let asteroid_spawn_rate_seconds = 0.8
+let asteroid_max_radius = asteroid_min_radius *. float_of_int asteroid_kinds
+let shot_radius = 5.
+let player_shoot_speed = 500.
+let player_shoot_cooldown_seconds = 0.3

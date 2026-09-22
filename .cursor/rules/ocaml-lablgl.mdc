@@ -1,0 +1,42 @@
+---
+description: LablGL / GLUT conventions for the OCaml Asteroids port
+globs: src/**/*.ml
+alwaysApply: false
+---
+
+# OCaml + LablGL style
+
+Match `ocaml-invader` and the Python original. Grow modules only as the current chapter requires. OCaml is 4.08 inside the container.
+
+## State and actions
+
+- Mutable record fields (`mutable position`, `mutable rotation`, `mutable asteroids`, ...).
+- All mutations go through `Game.controller game = function | Press k -> ... | Release k -> ... | Tick dt -> ...`.
+- `Tick` runs, in order: `updatePlayer`, `updateAsteroidField`, `advanceAll`, `checkPlayerCollisions`, `checkShotCollisions`.
+- `Circleshape.circleshape` is the shared record; `Asteroid.asteroid` and `Shot.shot` alias it; `Player.player` embeds it as `shape`.
+- `Vec2.t` is immutable; mirror `pygame.Vector2` with `add`, `sub`, `scale`, `rotate ~deg`, `distance`.
+
+## GLUT
+
+- Window: `initDisplayMode` (double buffer), `GluMat.ortho2d ~x:(0., w) ~y:(h, 0.)` (**y down**), `idleFunc postRedisplay`.
+- Input: `keyboardFunc` / `keyboardUpFunc` with `~key ~x ~y`; `ignoreKeyRepeat ~ignore:true`; Esc `27` exits; letters are ASCII ints (`Char.code 'a'`).
+- Timer: `Glut.timerFunc` is one-shot; `tickTicker` re-registers every 16 ms and derives `dt` from `Glut.get ~gtype:Glut.ELAPSED_TIME`.
+
+## Drawing
+
+```ocaml
+GlMat.load_identity ();
+GlMat.translate3 (x, y, 0.);
+GlDraw.color (1., 1., 1.);
+GlDraw.begins `line_loop;
+(* local vertices *)
+GlDraw.ends ()
+```
+
+Set `GlDraw.line_width Constants.line_width` once per frame in `Game.render`. Circles are 32-segment `line_loop`s; the player is a 3-vertex `line_loop` in world coordinates (no translate). End every frame with `Glut.swapBuffers ()`.
+
+## Pitfalls
+
+- Do not `open Circleshape` in a module that defines its own `create`.
+- Use `List.memq` / `==` when removing a specific shot or asteroid; values may be equal by structure.
+- `Random.self_init ()` once in `main.ml`; map `randint(a, b)` to `a + Random.int (b - a + 1)`.
