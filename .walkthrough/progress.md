@@ -1,10 +1,10 @@
 # Walkthrough progress
 
-**Current chapter:** 1
+**Current chapter:** 3
 
 - [x] 0. Project setup (Docker / obuild / Makefile already in the repo)
-- [ ] 1. Empty window
-- [ ] 2. Game state and tick
+- [x] 1. Empty window
+- [x] 2. Game state and tick
 - [ ] 3. Vectors and circles
 - [ ] 4. Player
 - [ ] 5. Input and movement
