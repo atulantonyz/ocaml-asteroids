@@ -1,2 +1,8 @@
 dist
 ocaml-asteroids
+_build
+.merlin
+.vscode/
+dune
+dune-project
+src/dune
