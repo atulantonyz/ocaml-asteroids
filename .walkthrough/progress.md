@@ -1,12 +1,12 @@
 # Walkthrough progress
 
-**Current chapter:** 3
+**Current chapter:** 5
 
 - [x] 0. Project setup (Docker / obuild / Makefile already in the repo)
 - [x] 1. Empty window
 - [x] 2. Game state and tick
-- [ ] 3. Vectors and circles
-- [ ] 4. Player
+- [x] 3. Vectors and circles
+- [x] 4. Player
 - [ ] 5. Input and movement
 - [ ] 6. Asteroids and the asteroid field
 - [ ] 7. Shooting
