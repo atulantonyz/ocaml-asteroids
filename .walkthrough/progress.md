@@ -7,7 +7,7 @@
 - [x] 2. Game state and tick
 - [x] 3. Vectors and circles
 - [x] 4. Player
-- [ ] 5. Input and movement
+- [x] 5. Input and movement
 - [ ] 6. Asteroids and the asteroid field
 - [ ] 7. Shooting
 - [ ] 8. Collisions

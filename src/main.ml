@@ -25,6 +25,19 @@ let initView ~w ~h =
 let initTickers ~game =
     Glut.timerFunc ~ms:16 ~cb:(tickTicker game (elapsed ())) ~value:0
 
+let keyDown game = fun ~key ~x ~y ->
+    match key with
+    | 27 -> exit 0
+    | _ -> game := Game.controller !game (Game.Press key)
+
+let keyUp game = fun ~key ~x ~y ->
+    game := Game.controller !game (Game.Release key)
+
+let initInputs ~game =
+    Glut.ignoreKeyRepeat ~ignore:true;
+    Glut.keyboardFunc ~cb:(keyDown game);
+    Glut.keyboardUpFunc ~cb:(keyUp game)
+
 let () =
     ignore (Glut.init Sys.argv);
     Random.self_init ();
@@ -34,5 +47,6 @@ let () =
     initDisplay ~w ~h ~title:"OCaml Asteroids";
     initView ~w ~h;
     initTickers ~game;
+    initInputs ~game;
     Glut.displayFunc ~cb:(fun () -> Game.render !game);
     Glut.mainLoop ()

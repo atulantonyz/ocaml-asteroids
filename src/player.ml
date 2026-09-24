@@ -29,3 +29,14 @@ let render player =
     GlDraw.begins `line_loop;
     List.iter (fun (p : Vec2.t) -> GlDraw.vertex2 (p.x, p.y)) (triangle player);
     GlDraw.ends ()
+
+(* rotate the player by dt degrees *)
+let rotate ~dt player =
+    player.rotation <- player.rotation +. player_turn_speed *. dt
+
+(* move the player by dt units forward along its forward vector *)
+let move ~dt player =
+    let forward = Vec2.rotate Vec2.up ~deg:player.rotation in
+    let step = Vec2.scale forward (player_speed *. dt) in
+    player.shape.position <- Vec2.add player.shape.position step
+
