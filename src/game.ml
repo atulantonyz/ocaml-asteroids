@@ -42,6 +42,24 @@ let advanceAll ~dt game =
     game.asteroids <- List.map (Asteroid.advance ~dt) game.asteroids;
     game.shots <- List.map (Shot.advance ~dt) game.shots
 
+let checkPlayerCollisions game =
+    let player = game.player.Player.shape in
+    if List.exists (fun asteroid -> Circleshape.collides_with asteroid player) game.asteroids then begin
+        print_endline "Game over!";
+        exit 0
+    end
+
+let checkShotCollisions game =
+    let hitBy asteroid = List.find_opt (fun shot -> Circleshape.collides_with asteroid shot) game.shots in
+    let survivors = ref [] and usedShots = ref [] in
+    List.iter (fun asteroid ->
+        match hitBy asteroid with
+        | None -> survivors := !survivors @ [ asteroid ]
+        | Some shot -> usedShots := shot :: !usedShots
+    ) game.asteroids;
+    game.asteroids <- !survivors;
+    game.shots <- List.filter (fun shot -> not (List.memq shot !usedShots)) game.shots
+
 let controller game = function
     | Press key ->
         if not (List.mem key game.held) then game.held <- key :: game.held;
@@ -53,6 +71,8 @@ let controller game = function
         updatePlayer ~dt game;
         updateAsteroidField ~dt game;
         advanceAll ~dt game;
+        checkPlayerCollisions game;
+        checkShotCollisions game;
         game
 
 let render game =
