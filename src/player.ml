@@ -40,3 +40,7 @@ let move ~dt player =
     let step = Vec2.scale forward (player_speed *. dt) in
     player.shape.position <- Vec2.add player.shape.position step
 
+let shoot player =
+    let velocity = Vec2.scale (Vec2.rotate Vec2.up ~deg:player.rotation) player_shoot_speed in
+    Shot.create ~position:player.shape.position ~velocity
+

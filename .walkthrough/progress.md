@@ -9,7 +9,7 @@
 - [x] 4. Player
 - [x] 5. Input and movement
 - [x] 6. Asteroids and the asteroid field
-- [ ] 7. Shooting
+- [x] 7. Shooting
 - [ ] 8. Collisions
 - [ ] 9. Splitting
 

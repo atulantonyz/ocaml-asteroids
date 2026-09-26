@@ -8,6 +8,7 @@ type game = {
     mutable spawn_timer : float;
     mutable held : int list;
     mutable asteroids : Asteroid.asteroid list;
+    mutable shots : Shot.shot list;
 }
 
 let key_a = Char.code 'a'
@@ -24,7 +25,11 @@ let updatePlayer ~dt game =
     if isHeld game key_a then Player.rotate ~dt:(-. dt) player;
     if isHeld game key_d then Player.rotate ~dt player;
     if isHeld game key_w then Player.move ~dt player;
-    if isHeld game key_s then Player.move ~dt:(-. dt) player
+    if isHeld game key_s then Player.move ~dt:(-. dt) player;
+    if isHeld game key_space && player.shot_cooldown <= 0. then begin
+    player.shot_cooldown <- Constants.player_shoot_cooldown_seconds;
+    game.shots <- game.shots @ [ Player.shoot player ]
+end
 
 let updateAsteroidField ~dt game =
     game.spawn_timer <- game.spawn_timer +. dt;
@@ -34,7 +39,8 @@ let updateAsteroidField ~dt game =
     end
 
 let advanceAll ~dt game =
-    game.asteroids <- List.map (Asteroid.advance ~dt) game.asteroids
+    game.asteroids <- List.map (Asteroid.advance ~dt) game.asteroids;
+    game.shots <- List.map (Shot.advance ~dt) game.shots
 
 let controller game = function
     | Press key ->
@@ -53,6 +59,7 @@ let render game =
     GlClear.clear [ `color ];
     GlDraw.line_width Constants.line_width;
     List.iter Asteroid.render game.asteroids;
+    List.iter Shot.render game.shots;
     Player.render game.player;
     Glut.swapBuffers ()
 
@@ -63,4 +70,5 @@ let init () = {
     spawn_timer = 0.;
     held = [];
     asteroids = [];
+    shots = [];
 }
