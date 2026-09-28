@@ -51,13 +51,15 @@ let checkPlayerCollisions game =
 
 let checkShotCollisions game =
     let hitBy asteroid = List.find_opt (fun shot -> Circleshape.collides_with asteroid shot) game.shots in
-    let survivors = ref [] and usedShots = ref [] in
+    let survivors = ref [] and spawned = ref [] and usedShots = ref [] in
     List.iter (fun asteroid ->
         match hitBy asteroid with
         | None -> survivors := !survivors @ [ asteroid ]
-        | Some shot -> usedShots := shot :: !usedShots
+        | Some shot ->
+            usedShots := shot :: !usedShots;
+            spawned := !spawned @ Asteroid.split asteroid
     ) game.asteroids;
-    game.asteroids <- !survivors;
+    game.asteroids <- !survivors @ !spawned;
     game.shots <- List.filter (fun shot -> not (List.memq shot !usedShots)) game.shots
 
 let controller game = function

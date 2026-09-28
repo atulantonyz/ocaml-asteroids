@@ -10,7 +10,7 @@
 - [x] 5. Input and movement
 - [x] 6. Asteroids and the asteroid field
 - [x] 7. Shooting
-- [ ] 8. Collisions
-- [ ] 9. Splitting
+- [x] 8. Collisions
+- [x] 9. Splitting
 
 After finishing a chapter, check its box and set **Current chapter** to the next number.
