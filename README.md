@@ -2,6 +2,11 @@
 
 An Asteroids clone in OCaml and OpenGL (LablGL / GLUT). The finished game is in [`src/`](src/). It uses Docker, `obuild`, LablGL, and GLUT, and matches the behavior of the pygame Asteroids game: no score, lives, wrap-around, or sound. `logger.py` from that original is not ported.
 
+## References
+
+- [Build Asteroids with Python](https://www.boot.dev/courses/build-asteroids-python) on boot.dev, the pygame game this port follows
+- [OCaml and OpenGL in practice](https://marmelab.com/blog/2020/02/21/ocaml-and-opengl-in-practice.html), the Space Invaders write-up this stack follows (Docker, `obuild`, LablGL, GLUT)
+
 ## Run the game
 
 Linux or WSL2, Docker, and a display. On WSL2 that means WSLg or an X server.
