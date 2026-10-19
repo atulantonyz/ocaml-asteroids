@@ -1,24 +1,47 @@
 # OCaml Asteroids
 
-An Asteroids clone in OCaml and OpenGL (LablGL / GLUT), rebuilt as a **guided walkthrough**.
+An Asteroids clone in OCaml and OpenGL (LablGL / GLUT). The finished game is in [`src/`](src/). It uses Docker, `obuild`, LablGL, and GLUT, and matches the behavior of the pygame Asteroids game: no score, lives, wrap-around, or sound. `logger.py` from that original is not ported.
 
-This project ports the pygame game in [`../Asteroids`](../Asteroids) to the stack used by [`../ocaml-invader`](../ocaml-invader): Docker, `obuild`, LablGL and GLUT. The Docker image, `obuild` config, and Makefile are already here. Game source is not: you write it chapter by chapter.
+## Run the game
 
-## Start here
+Linux or WSL2, Docker, and a display. On WSL2 that means WSLg or an X server.
 
-In Cursor Agent chat, say:
+The window is the binary `./ocaml-asteroids` on the host, so install the host GLUT library first (`freeglut3` on Debian and Ubuntu; on newer Ubuntu the package that provides `libglut.so.3` may have another name):
+
+```bash
+sudo apt-get install freeglut3
+```
+
+Then:
+
+```bash
+make install   # once: build a local image named ocamlasteroids
+make start     # compile in that image, open the game, then delete the build
+```
+
+`make install` does not download an `ocamlasteroids` image. It builds one from the [`Dockerfile`](Dockerfile). Docker Hub is used only for the base image `ocaml/opam2:debian-10-ocaml-4.08`.
+
+`make build` only compiles, and it needs a real terminal (`docker run -i -t`). `make start` always runs `make clean` after the game exits, so the binary is not left behind.
+
+| File | Role |
+|------|------|
+| [`Dockerfile`](Dockerfile) | `ocaml/opam2:debian-10-ocaml-4.08` plus `lablgl`, `obuild`, freeglut/GLU |
+| [`ocaml-asteroids.obuild`](ocaml-asteroids.obuild) | Executable `ocaml-asteroids`, `main-is: main.ml`, `src-dir: src` |
+| [`Makefile`](Makefile) | Docker-wrapped `install` / `build` / `start` |
+
+## Controls
+
+`A` / `D` rotate, `W` / `S` thrust forward / back, `Space` shoot, `Esc` quit. Keys are lowercase; Caps Lock makes them miss.
+
+## Walkthrough
+
+This repo was built one chapter at a time. To rebuild it that way in Cursor Agent chat, say:
 
 ```
 Begin the OCaml Asteroids walkthrough from chapter 1
 ```
 
-The agent teaches one chapter at a time. After each chapter you should have something you can build and see.
-
-**Spoilers:** [`.walkthrough/reference/src/`](.walkthrough/reference/src/) is the finished game. Do not open it unless you want the full solution. The agent will not paste those files unless you are stuck or you ask.
-
-Progress is tracked in [`.walkthrough/progress.md`](.walkthrough/progress.md). Chapter briefs live in [`.walkthrough/chapters/`](.walkthrough/chapters/).
-
-## Chapters
+The agent teaches one chapter at a time. [`.walkthrough/reference/src/`](.walkthrough/reference/src/) is a second copy of the finished game. Progress is tracked in [`.walkthrough/progress.md`](.walkthrough/progress.md). Chapter briefs live in [`.walkthrough/chapters/`](.walkthrough/chapters/).
 
 | # | Chapter | Python file mirrored | You will be able to see |
 |---|---------|----------------------|-------------------------|
@@ -32,25 +55,3 @@ Progress is tracked in [`.walkthrough/progress.md`](.walkthrough/progress.md). C
 | 7 | [Shooting](.walkthrough/chapters/07-shooting.md) | `shot.py`, `Player.shoot` | Space fires with a 0.3 s cooldown |
 | 8 | [Collisions](.walkthrough/chapters/08-collisions.md) | `main.py` (loops) | Shots remove asteroids; crash prints `Game over!` |
 | 9 | [Splitting](.walkthrough/chapters/09-splitting.md) | `Asteroid.split` | Big rocks break into two faster smaller ones |
-
-## Controls
-
-`A` / `D` rotate, `W` / `S` thrust forward / back, `Space` shoot, `Esc` quit.
-
-## Project setup (already done)
-
-| File | Role |
-|------|------|
-| [`Dockerfile`](Dockerfile) | `ocaml/opam2:debian-10-ocaml-4.08` plus `lablgl`, `obuild`, freeglut/GLU |
-| [`ocaml-asteroids.obuild`](ocaml-asteroids.obuild) | Executable `ocaml-asteroids`, `main-is: main.ml`, `src-dir: src` |
-| [`Makefile`](Makefile) | Docker-wrapped `install` / `build` / `start` |
-
-```bash
-make install   # build the Docker image (once)
-make build     # obuild configure && obuild build
-make start     # build, run ./ocaml-asteroids, then clean
-```
-
-Host OpenGL/GLUT is required to *run* the binary (`freeglut3` on Debian/Ubuntu). If start fails, see `make start-advice` / `make deps-install`.
-
-This walkthrough keeps **obuild + LablGL/GLUT** and the Python game's exact behavior. It does not port `logger.py`, and does not add score, lives, wrap-around, or sound.
